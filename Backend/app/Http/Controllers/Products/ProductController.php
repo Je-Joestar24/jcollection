@@ -26,7 +26,7 @@ class ProductController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('description', 'LIKE', "%{$search}%");
+                    ->orWhere('description', 'LIKE', "%{$search}%");
             });
         }
 
@@ -38,8 +38,9 @@ class ProductController extends Controller
     /**
      * Show a single product.
      */
-    public function show(Product $product)
+    public function show($id)
     {
+        $product = Product::findOrFail($id);
         return new ProductResource($product);
     }
 
