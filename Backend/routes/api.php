@@ -7,7 +7,7 @@ use App\Http\Controllers\Products\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/', function (Request $request) {
+Route::post('/test', function () {
     return response()->json(["Laravel" => app()->version()]);
 });
 
