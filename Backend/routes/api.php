@@ -20,12 +20,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Product API Routes
     Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index']);       // list products
-        Route::post('/', [ProductController::class, 'store']);      // create product
         Route::get('/{id}', [ProductController::class, 'show']);    // get single product
-        Route::put('/{id}', [ProductController::class, 'update']);  // update product
-        Route::delete('/{id}', [ProductController::class, 'destroy']); // delete product
+        // Route::post('/', [ProductController::class, 'store']);      // create product
+        // Route::put('/{id}', [ProductController::class, 'update']);  // update product
+        // Route::delete('/{id}', [ProductController::class, 'destroy']); // delete product
 
-        // Extra endpoint to sync from FakeStoreAPI
-        Route::post('/sync', [ProductController::class, 'syncProducts']);
+        // // Extra endpoint to sync from FakeStoreAPI
+        // Route::post('/sync', [ProductController::class, 'syncProducts']);
     });
 });
