@@ -1,10 +1,15 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import './assets/styles/index.css'
+import { Provider } from "react-redux";      // 👈 import Provider
+import { store } from "./store";            // 👈 import your Redux store
 
-createRoot(document.getElementById('root')).render(
+import AppRouter from "./router";
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <Provider store={store}>                
+      <AppRouter />
+    </Provider>
+  </StrictMode>
+);
