@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useUserLogin } from "../../hooks/useAuth";
 
 export default function LoginModal({ open, onClose }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login, loading, error, userLogged } = useUserLogin();
+    const modalRef = useRef(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,11 +17,25 @@ export default function LoginModal({ open, onClose }) {
         if (userLogged && onClose) onClose();
     }, [userLogged, onClose]);
 
+    // Click outside to close
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                if (onClose) onClose();
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [onClose]);
+
     if (!open) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/60 backdrop-blur-sm transition-all duration-300 animate-fade-in">
-            <div className="bg-card rounded-xl shadow-2xl p-8 w-full max-w-md border border-borderSecondary scale-95 animate-pop-in">
+            <div ref={modalRef} className="bg-card rounded-xl shadow-2xl p-8 w-full max-w-md border border-borderSecondary scale-95 animate-pop-in">
                 <button
                     className="absolute top-4 right-4 text-textSecondary hover:text-error transition"
                     onClick={onClose}
