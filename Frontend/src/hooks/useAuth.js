@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../store/userSlice';
+import { login, signup } from '../store/userSlice';
 import { clearModal } from '../store/uiSlice';
 
 export function useUserLogin() {
     const dispatch = useDispatch();
-    const { user, token, userLogged, loading, error } = useSelector(state => state.user);
+    const { user, token, userLogged, loading, error,
+        signupErrors,
+        signupMessage } = useSelector(state => state.user);
 
     const handleLogin = async (email, password) => {
         try {
@@ -15,12 +17,25 @@ export function useUserLogin() {
         }
     };
 
+    // Signup handler
+    const handleSignup = async (name, email, password, password_confirmation) => {
+        try {
+            await dispatch(signup({ name, email, password, password_confirmation })).unwrap();
+            dispatch(clearModal());
+        } catch (error) {
+            console.error("Signup failed:", error);
+        }
+    };
+
     return {
         user,
         token,
         userLogged,
         loading,
         error,
+        signupErrors,
+        signupMessage,
         login: handleLogin,
+        signup: handleSignup,
     };
 }
