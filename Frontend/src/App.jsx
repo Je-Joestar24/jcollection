@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+import Navigations from './components/header/Navigations'
+import Modals from './components/modals/Modals'
 
 function App() {
   return (
     <>
       <div>
-        <nav>
-          <Link to="/">Home</Link> | <Link to="/about">About</Link>
-        </nav>
+        <Navigations />
+
         <main>
           <Outlet />
         </main>
-
+        <Modals />
         <footer>
           <small>© 2025 JCollection React App</small>
         </footer>
