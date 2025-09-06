@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import Navigations from './components/header/Navigations'
+import Navbar from './components/header/Navbar'
 import Modals from './components/modals/Modals'
 
 function App() {
   return (
     <>
       <div>
-        <Navigations />
+        <Navbar />
 
         <main>
           <Outlet />
