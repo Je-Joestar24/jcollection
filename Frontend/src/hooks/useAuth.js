@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, signup } from '../store/userSlice';
 import { clearModal } from '../store/uiSlice';
 
-export function useUserLogin() {
+export function useUserAuth() {
     const dispatch = useDispatch();
     const { user, token, userLogged, loading, error,
         signupErrors,

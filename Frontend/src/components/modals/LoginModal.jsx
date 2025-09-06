@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useUserLogin } from "../../hooks/useAuth";
+import { useUserAuth } from "../../hooks/useAuth";
 import Form from "./Login/Form";
 
 export default function LoginModal({ onClose }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { login, loading, error } = useUserLogin();
+    const { login, loading, error } = useUserAuth();
     const modalRef = useRef(null);
 
     const handleSubmit = async (e) => {
