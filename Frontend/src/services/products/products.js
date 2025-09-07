@@ -1,4 +1,4 @@
-import api, { csrf } from "../../config/api";
+import api from "../../config/api";
 
 /**
  * Fetch products with support for search, filters, sorting, and pagination
@@ -19,8 +19,6 @@ const fetchProducts = async ({
     filters = {},
 } = {}) => {
     try {
-        await csrf(); // ensure CSRF token is set (if required)
-
         const response = await api.get("/api/products", {
             params: {
                 search,
