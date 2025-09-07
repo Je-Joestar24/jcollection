@@ -5,14 +5,16 @@ import About from "../pages/About";
 import Favorites from "../pages/Favorites";
 import Products from "../pages/Products";
 import Profile from "../pages/Profile";
+import RequireAuth from "./access/RequireAuth";
+import RequireGuest from "./access/RequireGuest";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         children: [
-            { path: "", element: <Home /> },
-            { path: "about", element: <About /> },
+            { path: "", element: (<RequireGuest><Home /></RequireGuest>) },
+            { path: "about", element: (<RequireGuest><About /></RequireGuest>) },
         ]
     },
     {
@@ -20,8 +22,8 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
             { path: "", element: <Products /> },
-            { path: "favorites", element: <Favorites /> },
-            { path: "profile", element: <Profile /> },
+            { path: "favorites", element: (<RequireAuth><Favorites /></RequireAuth>) },
+            { path: "profile", element: (<RequireAuth><Profile /></RequireAuth>) },
         ]
     },
 ]);
