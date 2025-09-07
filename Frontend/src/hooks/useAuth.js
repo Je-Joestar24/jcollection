@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { login, signup } from '../store/userSlice';
+import { login, signup, logout } from '../store/userSlice';
 import { clearModal } from '../store/uiSlice';
 
 export function useUserAuth() {
@@ -27,6 +27,8 @@ export function useUserAuth() {
         }
     };
 
+    const handleLogout = () => { dispatch(logout()) };
+
     return {
         user,
         token,
@@ -37,5 +39,6 @@ export function useUserAuth() {
         signupMessage,
         login: handleLogin,
         signup: handleSignup,
+        logout: handleLogout,
     };
 }

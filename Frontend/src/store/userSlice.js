@@ -15,7 +15,7 @@ export const login = createAsyncThunk(
 
             return {
                 user: result.data.user || null,
-                token: result.data.token || null,
+                token: result.data.access_token || null,
             };
         } else {
             return rejectWithValue(result.error);

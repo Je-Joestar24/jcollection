@@ -1,8 +1,15 @@
 import { useUI } from "../../hooks/useUI"
 
-export default function AuthActions() {
-    const { openModal, activeModal } = useUI();
+import { useUserAuth } from "../../hooks/useAuth";
 
+export default function AuthActions() {
+    const { openModal } = useUI();
+
+    const { user, userLogged } = useUserAuth();
+
+    // Only show if user is not logged in and user data exists
+    if (userLogged || user) return null;
+    
     return (
         <div className="flex gap-2">
             <button
