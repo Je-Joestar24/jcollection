@@ -10,6 +10,7 @@ export const login = createAsyncThunk(
         if (result.success) {
             // Store token in localStorage
             if (result.data.access_token) localStorage.setItem('token', result.data.access_token);
+            if (result.data.user) localStorage.setItem('user', JSON.stringify(result.data.user));
 
             return {
                 user: result.data.user || null,
@@ -28,6 +29,7 @@ export const signup = createAsyncThunk(
         const result = await signupService(name, email, password, password_confirmation);
         if (result.success) {
             if (result.data.access_token) localStorage.setItem('token', result.data.access_token);
+            if (result.data.user) localStorage.setItem('user', JSON.stringify(result.data.user));
             return {
                 user: result.data.user || null,
                 token: result.data.access_token || null,
@@ -45,7 +47,7 @@ export const signup = createAsyncThunk(
 
 
 const initialState = {
-    user: null,
+    user: JSON.parse(localStorage.getItem('user')) || null,
     token: localStorage.getItem('token') || null,
     userLogged: !!localStorage.getItem('token'),
     loading: false,

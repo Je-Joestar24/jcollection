@@ -1,7 +1,8 @@
-import api from "../../config/api";
+import api, { csrf } from "../../config/api";
 
 const signup = async (name, email, password, password_confirmation) => {
     try {
+        await csrf(); // Ensure CSRF token is set
         const response = await api.post('/api/auth/signup', {
             name,
             email,
