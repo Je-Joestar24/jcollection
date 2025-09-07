@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import loginService from '../services/auth/login';
 import signupService from '../services/auth/signup';
+import logoutService from '../services/auth/logout';
 
 // Async thunk for login
 export const login = createAsyncThunk(
@@ -16,6 +17,20 @@ export const login = createAsyncThunk(
                 user: result.data.user || null,
                 token: result.data.token || null,
             };
+        } else {
+            return rejectWithValue(result.error);
+        }
+    }
+);
+
+export const logout = createAsyncThunk(
+    'user/logout',
+    async (_, { rejectWithValue }) => {
+        const result = await logoutService();
+        if (result.success) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            return {};
         } else {
             return rejectWithValue(result.error);
         }
@@ -96,7 +111,18 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload?.error || 'Signup failed';
                 state.signupErrors = action.payload?.errors || null;
-            });
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.user = null;
+                state.token = null;
+                state.userLogged = false;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(logout.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Logout failed';
+            });;
     },
 });
 
