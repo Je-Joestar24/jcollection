@@ -12,17 +12,18 @@ class ProductController extends Controller
 {
     /**
      * Display a listing of products (with sync, search & pagination).
-     */
-    public function index(Request $request)
+     */ public function index(Request $request)
     {
-        // 🔄 Sync external API into DB
         $this->syncExternalProducts();
 
-        $perPage = $request->get('per_page', 10);
-        $search  = $request->get('search', null);
+        $perPage    = $request->get('per_page', 10);
+        $search     = $request->get('search', null);
+        $sortBy     = $request->get('sort_by', 'created_at');
+        $sortOrder  = $request->get('sort_order', 'desc');
 
         $query = Product::query();
 
+        // 🔍 Search
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")
@@ -30,10 +31,32 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->orderBy('created_at', 'desc')->paginate($perPage);
+        // 🎯 Example filter: category
+        if ($request->has('category_id')) {
+            $query->where('product_category_id', $request->get('category_id'));
+        }
+
+        // 💰 Example filter: price range
+        if ($request->has('price_min')) {
+            $query->where('price', '>=', $request->get('price_min'));
+        }
+        if ($request->has('price_max')) {
+            $query->where('price', '<=', $request->get('price_max'));
+        }
+
+        // 🔄 Sorting (safe fallback)
+        $allowedSorts = ['created_at', 'price', 'name'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'created_at';
+        }
+        $query->orderBy($sortBy, $sortOrder);
+
+        // 📦 Paginate
+        $products = $query->paginate($perPage);
 
         return ProductResource::collection($products);
     }
+
 
     /**
      * Show a single product.
