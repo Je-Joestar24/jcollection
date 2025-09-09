@@ -1,6 +1,7 @@
 // src/store/productSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import fetchProductsService from "../services/products/fetch";
+import showProductService from "../services/products/show";
 
 // Async thunk to fetch products
 export const fetchProducts = createAsyncThunk(
@@ -15,10 +16,24 @@ export const fetchProducts = createAsyncThunk(
     }
 );
 
+// Async thunk to fetch a single product
+export const showProduct = createAsyncThunk(
+    "products/show",
+    async (id, { rejectWithValue }) => {
+        const result = await showProductService(id);
+        if (result.success) {
+            return result.data; // single product object
+        } else {
+            return rejectWithValue(result.error);
+        }
+    }
+);
+
 const initialState = {
     items: [], // product list
     links: null, // pagination links
     meta: null, // pagination meta
+    current: null, // currently viewed single product
     loading: false,
     error: null,
 };
@@ -31,6 +46,10 @@ const productSlice = createSlice({
             state.items = [];
             state.links = null;
             state.meta = null;
+            state.error = null;
+        },
+        clearCurrentProduct: (state) => {
+            state.current = null;
             state.error = null;
         },
     },
@@ -49,9 +68,22 @@ const productSlice = createSlice({
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to fetch products";
+            })
+            // show single product
+            .addCase(showProduct.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(showProduct.fulfilled, (state, action) => {
+                state.loading = false;
+                state.current = action.payload || null;
+            })
+            .addCase(showProduct.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to fetch product";
             });
     },
 });
 
-export const { clearProducts } = productSlice.actions;
+export const { clearProducts, clearCurrentProduct } = productSlice.actions;
 export default productSlice.reducer;
