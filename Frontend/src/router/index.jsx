@@ -18,15 +18,16 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: "products/",
+        path: "products",
         element: <App />,
         children: [
-            { path: "", element: <Products /> },
+            { path: "", element: (<RequireAuth><Products /></RequireAuth>) },
             { path: "favorites", element: (<RequireAuth><Favorites /></RequireAuth>) },
             { path: "profile", element: (<RequireAuth><Profile /></RequireAuth>) },
         ]
-    },
+    }
 ]);
+
 
 export default function AppRouter() {
     return <RouterProvider router={router} />;

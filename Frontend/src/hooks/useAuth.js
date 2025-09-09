@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { login, signup, logout } from '../store/userSlice';
 import { clearModal } from '../store/uiSlice';
+import { useNavigate } from 'react-router-dom';
 
 export function useUserAuth() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user, token, userLogged, loading, error,
         signupErrors,
@@ -12,6 +14,7 @@ export function useUserAuth() {
         try {
             await dispatch(login({ email, password })).unwrap();
             dispatch(clearModal());
+            navigate('/products')
         } catch (error) {
             console.error("Login failed:", error);
         }
@@ -22,12 +25,16 @@ export function useUserAuth() {
         try {
             await dispatch(signup({ name, email, password, password_confirmation })).unwrap();
             dispatch(clearModal());
+            navigate('/products')
         } catch (error) {
             console.error("Signup failed:", error);
         }
     };
 
-    const handleLogout = () => { dispatch(logout()) };
+    const handleLogout = async () => {
+        await dispatch(logout());
+        navigate('/')
+    };
 
     return {
         user,

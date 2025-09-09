@@ -12,8 +12,7 @@ export default function ProductList() {
         openModal('product')
     }
     useEffect(() => {
-        fetchProducts({ page: 1, per_page: 10});
-        console.log("Fetching products...");
+        fetchProducts({ page: 1});
     }, []);
 
     if (loading)

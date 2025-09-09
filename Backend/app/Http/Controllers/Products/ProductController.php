@@ -14,8 +14,6 @@ class ProductController extends Controller
      * Display a listing of products (with sync, search & pagination).
      */ public function index(Request $request)
     {
-        $this->syncExternalProducts();
-
         $perPage    = $request->get('per_page', 10);
         $search     = $request->get('search', null);
         $sortBy     = $request->get('sort_by', 'created_at');
@@ -109,33 +107,5 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['message' => 'Product deleted successfully']);
-    }
-
-    /**
-     * 🔒 Private method to sync products from FakeStoreAPI.
-     */
-    private function syncExternalProducts(): void
-    {
-        $response = Http::get('https://fakestoreapi.com/products');
-
-        if (!$response->successful()) {
-            return;
-        }
-
-        $externalProducts = $response->json();
-
-        foreach ($externalProducts as $item) {
-            // ✅ Check for duplicate by name
-            $exists = Product::where('name', $item['title'])->exists();
-
-            if (!$exists) {
-                Product::create([
-                    'name'        => $item['title'],
-                    'description' => $item['description'],
-                    'price'       => $item['price'],
-                    'image_url'   => $item['image'],
-                ]);
-            }
-        }
     }
 }

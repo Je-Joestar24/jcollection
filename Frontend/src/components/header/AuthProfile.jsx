@@ -7,9 +7,6 @@ export default function AuthProfile() {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
 
-    // Only show if user is logged in and user data exists
-    if (!userLogged || !user) return null;
-
     useEffect(() => {
         function handleClickOutside(event) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) setOpen(false);
@@ -18,13 +15,18 @@ export default function AuthProfile() {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [setOpen]);
+    }, []);
+
+    // Only show if user is logged in and user data exists
+    if (!userLogged || !user) return null;
 
     return (
         <div className="relative flex" ref={dropdownRef}>
             <Link to="favorites" className="flex">
                 <div className="relative flex items-center justify-center rounded-sm hover:bg-primary transition duration-300">
-                    <svg class="h-8 w-8 text-textSecondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
+                    <svg className="h-8 w-8 text-textSecondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                    </svg>
                 </div>
             </Link>
             <button

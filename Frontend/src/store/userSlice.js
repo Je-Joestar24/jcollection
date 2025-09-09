@@ -3,6 +3,7 @@ import loginService from '../services/auth/login';
 import signupService from '../services/auth/signup';
 import logoutService from '../services/auth/logout';
 
+
 // Async thunk for login
 export const login = createAsyncThunk(
     'user/login',
@@ -122,7 +123,7 @@ const userSlice = createSlice({
             .addCase(logout.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Logout failed';
-            });;
+            });
     },
 });
 
