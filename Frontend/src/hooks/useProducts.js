@@ -1,6 +1,6 @@
 // src/hooks/useProducts.js
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, clearProducts } from "../store/productSlice";
+import { fetchProducts, clearProducts, showProduct, clearCurrentProduct } from "../store/productSlice";
 
 export function useProducts() {
     const dispatch = useDispatch();
@@ -9,6 +9,7 @@ export function useProducts() {
         items,
         links,
         meta,
+        current,
         loading,
         error,
     } = useSelector((state) => state.products);
@@ -27,13 +28,30 @@ export function useProducts() {
         dispatch(clearProducts());
     };
 
+    // Fetch single product by ID
+    const loadProduct = async (id) => {
+        try {
+            await dispatch(showProduct(id)).unwrap();
+        } catch (err) {
+            console.error(`Failed to fetch product ${id}:`, err);
+        }
+    };
+
+    // Clear single product
+    const resetCurrentProduct = () => {
+        dispatch(clearCurrentProduct());
+    };
+
     return {
         items,
         links,
         meta,
+        current,
         loading,
         error,
         fetchProducts: loadProducts,
         clearProducts: resetProducts,
+        fetchProduct: loadProduct,
+        clearProduct: resetCurrentProduct,
     };
 }
