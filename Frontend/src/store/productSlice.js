@@ -35,7 +35,9 @@ const initialState = {
     meta: null, // pagination meta
     current: null, // currently viewed single product
     loading: false,
+    showLoading: false,
     error: null,
+    search: ""
 };
 
 const productSlice = createSlice({
@@ -51,6 +53,9 @@ const productSlice = createSlice({
         clearCurrentProduct: (state) => {
             state.current = null;
             state.error = null;
+        },
+        setSearch: (state, action) => {
+            state.search = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -71,19 +76,19 @@ const productSlice = createSlice({
             })
             // show single product
             .addCase(showProduct.pending, (state) => {
-                state.loading = true;
+                state.showLoading = true;
                 state.error = null;
             })
             .addCase(showProduct.fulfilled, (state, action) => {
-                state.loading = false;
+                state.showLoading = false;
                 state.current = action.payload || null;
             })
             .addCase(showProduct.rejected, (state, action) => {
-                state.loading = false;
+                state.showLoading = false;
                 state.error = action.payload || "Failed to fetch product";
             });
     },
 });
 
-export const { clearProducts, clearCurrentProduct } = productSlice.actions;
+export const { clearProducts, clearCurrentProduct, setSearch } = productSlice.actions;
 export default productSlice.reducer;

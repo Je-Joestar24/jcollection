@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    activeModal: "", // No modal open by default
+    activeModal: "",
+    globalLoading: false,
+    // No modal open by default
 };
 
 const uiSlice = createSlice({

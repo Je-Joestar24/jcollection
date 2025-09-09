@@ -1,6 +1,6 @@
 // src/hooks/useProducts.js
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, clearProducts, showProduct, clearCurrentProduct } from "../store/productSlice";
+import { fetchProducts, clearProducts, showProduct, clearCurrentProduct, setSearch } from "../store/productSlice";
 
 export function useProducts() {
     const dispatch = useDispatch();
@@ -12,6 +12,8 @@ export function useProducts() {
         current,
         loading,
         error,
+        showLoading,
+        search
     } = useSelector((state) => state.products);
 
     // Fetch products with params
@@ -42,16 +44,23 @@ export function useProducts() {
         dispatch(clearCurrentProduct());
     };
 
+    const setSearchValue = (value) => {
+        dispatch(setSearch(value));
+    };
+
     return {
         items,
         links,
         meta,
         current,
+        search,
         loading,
+        showLoading,
         error,
         fetchProducts: loadProducts,
         clearProducts: resetProducts,
         fetchProduct: loadProduct,
         clearProduct: resetCurrentProduct,
+        setSearch: setSearchValue,
     };
 }

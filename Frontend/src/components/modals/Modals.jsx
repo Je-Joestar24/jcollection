@@ -1,6 +1,7 @@
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 import { useUI } from "../../hooks/useUI";
+import ProductModal from "./ProductModal";
 
 export default function Modals() {
     const { activeModal, closeModal } = useUI();
@@ -11,6 +12,9 @@ export default function Modals() {
             )}
             {activeModal === "signup" && (
                 <SignupModal onClose={closeModal} />
+            )}
+            {activeModal == 'product' && (
+                <ProductModal onClose={closeModal} />
             )}
         </>
     );
