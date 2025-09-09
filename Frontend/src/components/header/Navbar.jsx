@@ -22,7 +22,6 @@ export default function Navbar() {
                     <AuthActions />
                 </div>
                 <div className="flex items-center gap-2 animate-auth-fade-in">
-                    {userLogged}
                     <AuthProfile />
                 </div>
             </nav>

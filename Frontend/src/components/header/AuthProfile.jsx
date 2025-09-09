@@ -21,7 +21,12 @@ export default function AuthProfile() {
     }, [setOpen]);
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative flex" ref={dropdownRef}>
+            <Link to="favorites" className="flex">
+                <div className="relative flex items-center justify-center rounded-sm hover:bg-primary transition duration-300">
+                    <svg class="h-8 w-8 text-textSecondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
+                </div>
+            </Link>
             <button
                 className="flex items-center gap-2 px-3 py-2 rounded-full bg-card border border-borderSecondary shadow hover:bg-primary/10 transition-all duration-300"
                 onMouseEnter={() => setOpen(true)}
@@ -33,7 +38,7 @@ export default function AuthProfile() {
             </button>
             {open && (
                 <div
-                    className="absolute right-0 mt-2 w-64 bg-card border border-borderSecondary rounded-xl shadow-lg p-4 z-50 animate-pop-in"
+                    className="absolute right-0 mt-14 w-64 bg-card border border-borderSecondary rounded-xl shadow-lg p-4 z-50 animate-pop-in"
                     onMouseEnter={() => setOpen(true)}
                     onMouseLeave={() => setOpen(false)}
 
